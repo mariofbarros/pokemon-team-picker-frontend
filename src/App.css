@@ -93,6 +93,12 @@
   height: 64px;
 }
 
+.dex-number {
+  font-size: 11px;
+  color: var(--muted, #888);
+  letter-spacing: 0.02em;
+}
+
 .types {
   display: flex;
   flex-wrap: wrap;

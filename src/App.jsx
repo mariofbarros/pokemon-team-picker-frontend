@@ -101,6 +101,7 @@ function App() {
                     }}
                   >
                     {p.sprite && <img src={p.sprite} alt={p.name} />}
+                    <span className="dex-number">#{String(p.id).padStart(3, "0")}</span>
                     <span>{p.name}</span>
                     {p.types?.length > 0 && (
                       <span className="types">
