@@ -1,32 +1,84 @@
-# Pokemon Team Picker — Frontend
+[![Status: Personal Project](https://img.shields.io/badge/Status-Personal_Project-orange)]()
+[![Warning: Not for Production](https://img.shields.io/badge/Warning-Not_for_Production-red)]()
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# Pokemon Team Picker Interface
 
-## Run locally
+A responsive **React** + **Vite** web interface for building and managing Pokémon teams of six. Pokémon data (sprites, types) is fetched live from [PokeAPI](https://pokeapi.co/), and teams are persisted through the [Pokemon Team Picker Backend](https://github.com/mariofbarros/pokemon-team-picker-backend).
 
-```bash
+## Features
+
+- **Team Management**: Create, edit, and delete Pokémon teams instantly.
+- **Slot Editor**: Fill each of the 6 team slots by Pokémon name or National Dex number, resolved live via PokeAPI.
+- **Responsive Design**: Clean, card-based layout for desktop and mobile.
+- **Error Handling**: Graceful fallbacks if the backend or PokeAPI is unreachable.
+- **Fast Dev Loop**: Powered by Vite with Hot Module Replacement (HMR).
+
+## Tech Stack
+
+- **Core**: React 19, Vite 8
+- **Language**: JavaScript (ES6+)
+- **HTTP Client**: Native `fetch` API
+- **External API**: [PokeAPI](https://pokeapi.co/) for Pokémon data
+- **Backend Integration**: Connects to `http://localhost:8000` by default (configurable via `VITE_API_URL`)
+- **Linting**: Oxlint
+
+## Prerequisites
+
+- **Node.js** (Version 18 or higher recommended)
+- **Git**
+- **Docker** (optional, for containerized runs)
+- A code editor (e.g., VS Code)
+
+## Setup Guide
+
+In order to see this application in full potential, please follow the setup instructions in the [Pokemon Team Picker Backend](https://github.com/mariofbarros/pokemon-team-picker-backend) repository first, so the API is running on http://localhost:8000.
+
+Once the backend is up:
+
+1. Navigate to the frontend folder:
+
+```
+cd pokemon-team-picker-frontend
+```
+
+2. Install dependencies:
+
+```
 npm install
+```
+
+3. Start the dev server:
+
+```
 npm run dev
 ```
 
-## Run with Docker
+Open the URL printed in the terminal (typically http://localhost:5173) and start building teams.
 
-```bash
+### Run with Docker
+
+Alternatively, build and serve the production bundle in a container:
+
+```
 docker build -t pokemon-team-picker-frontend .
 docker run -p 8080:80 pokemon-team-picker-frontend
 ```
 
 App available at http://localhost:8080.
 
-Currently, two official plugins are available:
+## ⚠️ Disclaimer
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+> **Personal Project Notice**
+>
+> This repository contains a **personal project** developed for portfolio and learning purposes, and as a **Proof of Concept (PoC)**. It is **not** intended for production use, commercial deployment, or handling sensitive data.
+>
+> **Key Limitations:**
+> - **Security:** The application lacks robust security measures (e.g., authentication, authorization, input sanitization beyond basics, and secure data encryption) required for real-world environments.
+> - **Scalability:** The architecture is designed for a single-user/local environment and does not support high traffic, concurrent users, or distributed systems.
+> - **Features:** Several features are incomplete or simplified to focus on core learning objectives.
+>
+> **Future Roadmap:**
+> This project is a work in progress. I intend to continue developing it to address these limitations, implement security best practices, and explore scalability solutions as part of my ongoing learning journey.
+>
+> **Usage:**
+> Feel free to review the code for educational insights, but please do not deploy this in a live environment without significant refactoring and security auditing.
