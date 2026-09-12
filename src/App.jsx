@@ -1,122 +1,136 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { getTeams, createTeam, updateTeam, deleteTeam, fetchPokemon } from "./api";
+import TeamForm from "./TeamForm";
+import SlotEditor from "./SlotEditor";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [teams, setTeams] = useState([]);
+  const [showCreate, setShowCreate] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editingSlot, setEditingSlot] = useState(null); // { teamId, index }
+  const [error, setError] = useState(null);
+
+  const loadTeams = async () => {
+    try {
+      setTeams(await getTeams());
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    loadTeams();
+  }, []);
+
+  const handleCreate = async (team) => {
+    await createTeam(team);
+    setShowCreate(false);
+    await loadTeams();
+  };
+
+  const handleUpdate = async (team) => {
+    await updateTeam(editingId, team);
+    setEditingId(null);
+    await loadTeams();
+  };
+
+  const handleSlotSave = async (teamId, index, nameOrId) => {
+    const team = teams.find((t) => t.id === teamId);
+    const pokemon = await fetchPokemon(nameOrId);
+    const pokemons = team.pokemons.map((p, i) => (i === index ? pokemon : p));
+    await updateTeam(teamId, { name: team.name, pokemons });
+    setEditingSlot(null);
+    await loadTeams();
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this team?")) return;
+    await deleteTeam(id);
+    await loadTeams();
+  };
+
+  const editingTeam = teams.find((t) => t.id === editingId);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app">
+      <h1>Pokemon Team Picker</h1>
+      {error && <p className="error">{error}</p>}
 
-      <div className="ticks"></div>
+      {editingId ? (
+        <TeamForm
+          initial={editingTeam}
+          onSubmit={handleUpdate}
+          onCancel={() => setEditingId(null)}
+          submitLabel="Update Team"
+        />
+      ) : showCreate ? (
+        <TeamForm
+          onSubmit={handleCreate}
+          onCancel={() => setShowCreate(false)}
+          submitLabel="Create Team"
+        />
+      ) : (
+        <button onClick={() => setShowCreate(true)}>+ New Team</button>
+      )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <ul className="teams">
+        {teams.map((team) => (
+          <li key={team.id} className="team-card">
+            <h3>{team.name}</h3>
+            <div className="pokemon-row">
+              {team.pokemons.map((p, i) =>
+                editingSlot?.teamId === team.id && editingSlot.index === i ? (
+                  // Slots are positional, so index is the stable key here.
+                  <SlotEditor
+                    key={i}
+                    initialName={p.name}
+                    onSave={(value) => handleSlotSave(team.id, i, value)}
+                    onCancel={() => setEditingSlot(null)}
+                  />
+                ) : (
+                  <button
+                    key={i}
+                    type="button"
+                    className="pokemon"
+                    title={`Edit slot ${i + 1}`}
+                    onClick={() => {
+                      setEditingId(null);
+                      setEditingSlot({ teamId: team.id, index: i });
+                    }}
+                  >
+                    {p.sprite && <img src={p.sprite} alt={p.name} />}
+                    <span>{p.name}</span>
+                    {p.types?.length > 0 && (
+                      <span className="types">
+                        {p.types.map((t) => (
+                          <span key={t} className={`type type-${t}`}>
+                            {t}
+                          </span>
+                        ))}
+                      </span>
+                    )}
+                  </button>
+                )
+              )}
+            </div>
+            <div className="actions">
+              <button
+                onClick={() => {
+                  setEditingSlot(null);
+                  setEditingId(team.id);
+                }}
+              >
+                Edit
+              </button>
+              <button onClick={() => handleDelete(team.id)}>Delete</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-export default App
+export default App;
