@@ -1,4 +1,4 @@
-[![Status: Personal Project](https://img.shields.io/badge/Status-Personal_Project-orange)]()
+[![Status: Academic Project](https://img.shields.io/badge/Status-Academic_Project-orange)]()
 [![Warning: Not for Production](https://img.shields.io/badge/Warning-Not_for_Production-red)]()
 
 # Pokemon Team Picker Interface
@@ -68,9 +68,9 @@ App available at http://localhost:8080.
 
 ## ⚠️ Disclaimer
 
-> **Personal Project Notice**
+> **Academic Project Notice**
 >
-> This repository contains a **personal project** developed for portfolio and learning purposes, and as a **Proof of Concept (PoC)**. It is **not** intended for production use, commercial deployment, or handling sensitive data.
+> This repository contains a **university project** developed for educational purposes and as a **Proof of Concept (PoC)**. It is **not** intended for production use, commercial deployment, or handling sensitive data.
 >
 > **Key Limitations:**
 > - **Security:** The application lacks robust security measures (e.g., authentication, authorization, input sanitization beyond basics, and secure data encryption) required for real-world environments.
