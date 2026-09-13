@@ -26,8 +26,10 @@ A responsive **React** + **Vite** web interface for building and managing Pokém
 
 - **Node.js** (Version 18 or higher recommended)
 - **Git**
-- **Docker** (optional, for containerized runs)
+- **Docker** (optional, for containerized runs — on Windows this means [Docker Desktop](https://www.docker.com/products/docker-desktop/) with the WSL2 backend enabled)
 - A code editor (e.g., VS Code)
+
+> **Windows users:** Install Node.js from [nodejs.org](https://nodejs.org/) (the installer adds `node` and `npm` to PATH automatically). All commands below work the same in Command Prompt, PowerShell, or Git Bash.
 
 ## Setup Guide
 
