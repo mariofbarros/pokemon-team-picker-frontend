@@ -11,6 +11,10 @@ A responsive **React** + **Vite** web interface for building and managing Pokém
 
 Team CRUD goes to the backend, which is the only thing that touches the database. Pokémon lookups (sprites, types) are fetched directly from PokeAPI in the browser and only reach the backend afterward, bundled into a team update.
 
+## About PokeAPI
+
+[PokeAPI](https://pokeapi.co/) is a free, public RESTful API providing data on the Pokémon universe — no API key or authentication required. Whenever a team slot is filled in with a name or National Dex number, `fetchPokemon()` in [`src/api.js`](src/api.js) calls `GET https://pokeapi.co/api/v2/pokemon/{nameOrId}` directly from the browser and reads back the sprite, types, and Pokédex number used to render that slot.
+
 ## Features
 
 - **Team Management**: Create, edit, and delete Pokémon teams instantly.
