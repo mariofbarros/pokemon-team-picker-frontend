@@ -5,6 +5,12 @@
 
 A responsive **React** + **Vite** web interface for building and managing Pokémon teams of six. Pokémon data (sprites, types) is fetched live from [PokeAPI](https://pokeapi.co/), and teams are persisted through the [Pokemon Team Picker Backend](https://github.com/mariofbarros/pokemon-team-picker-backend).
 
+## Architecture
+
+![Pokemon Team Picker connections diagram](architecture.svg)
+
+Team CRUD goes to the backend, which is the only thing that touches the database. Pokémon lookups (sprites, types) are fetched directly from PokeAPI in the browser and only reach the backend afterward, bundled into a team update.
+
 ## Features
 
 - **Team Management**: Create, edit, and delete Pokémon teams instantly.

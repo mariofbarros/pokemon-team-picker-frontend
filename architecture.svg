@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" role="img" aria-label="Frontend calls the FastAPI backend for team CRUD, which reads and writes a SQL database; the frontend also calls the public PokeAPI directly to look up Pokemon, bypassing the backend entirely.">
+  <title>Pokemon Team Picker — connections</title>
+  <style>
+    svg {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --surface-2: #eef1f6;
+      --border-strong: #b6bdc9;
+      --text: #1b1f2a;
+      --text-muted: #5c6472;
+      --accent: #c2483f;
+      --external-tint: #fbf1de;
+      --external-border: #e3c78a;
+      --backend-tint: #e9edf7;
+      --backend-border: #b6c2e0;
+    }
+    @media (prefers-color-scheme: dark) {
+      svg {
+        --surface-2: #23262f;
+        --border-strong: #454c5d;
+        --text: #e7e9ee;
+        --text-muted: #9aa1b0;
+        --accent: #e2756b;
+        --external-tint: #2c2717;
+        --external-border: #6b5a2e;
+        --backend-tint: #202538;
+        --backend-border: #3c4666;
+      }
+    }
+    .mono { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+    .node-box { stroke: var(--border-strong); stroke-width: 1.4; }
+    .node-box.frontend { fill: var(--surface-2); }
+    .node-box.backend { fill: var(--backend-tint); stroke: var(--backend-border); }
+    .node-box.db { fill: var(--surface-2); }
+    .node-box.external { fill: var(--external-tint); stroke: var(--external-border); }
+    .node-title { fill: var(--text); font-size: 15px; font-weight: 650; }
+    .node-sub { fill: var(--text-muted); font-size: 11.5px; }
+    .edge { fill: none; stroke: var(--border-strong); stroke-width: 1.6; }
+    .edge.highlight { stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 5 4; }
+    .edge-label { fill: var(--text-muted); font-size: 11.5px; }
+    .edge-label.highlight { fill: var(--accent); font-weight: 600; }
+    .arrowhead { fill: var(--border-strong); }
+    .arrowhead.highlight { fill: var(--accent); }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="arrowhead"></path>
+    </marker>
+    <marker id="arrow-hl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="arrowhead highlight"></path>
+    </marker>
+  </defs>
+
+  <!-- Frontend -->
+  <rect class="node-box frontend" x="30" y="195" width="210" height="110" rx="10"></rect>
+  <text class="node-title" x="50" y="230">Frontend (client)</text>
+  <text class="node-sub mono" x="50" y="250">React 19 + Vite</text>
+  <text class="node-sub mono" x="50" y="266">App.jsx, api.js</text>
+  <text class="node-sub mono" x="50" y="286">localhost:5173 (dev)</text>
+
+  <!-- Backend -->
+  <rect class="node-box backend" x="440" y="50" width="230" height="110" rx="10"></rect>
+  <text class="node-title" x="460" y="85">Backend</text>
+  <text class="node-sub mono" x="460" y="105">FastAPI (main.py + crud.py)</text>
+  <text class="node-sub mono" x="460" y="121">CORS: allow_origins=*</text>
+  <text class="node-sub mono" x="460" y="141">localhost:8000 (dev)</text>
+
+  <!-- Database -->
+  <rect class="node-box db" x="770" y="50" width="190" height="110" rx="10"></rect>
+  <text class="node-title" x="790" y="85">Database</text>
+  <text class="node-sub mono" x="790" y="105">SQLAlchemy ORM</text>
+  <text class="node-sub mono" x="790" y="125">sqlite:///teams.db</text>
+  <text class="node-sub" x="790" y="145">(or DATABASE_URL)</text>
+
+  <!-- PokeAPI -->
+  <rect class="node-box external" x="440" y="340" width="230" height="110" rx="10"></rect>
+  <text class="node-title" x="460" y="375">PokeAPI</text>
+  <text class="node-sub" x="460" y="395">Public third-party API</text>
+  <text class="node-sub mono" x="460" y="415">pokeapi.co/api/v2</text>
+  <text class="node-sub" x="460" y="435">(read-only, no auth)</text>
+
+  <!-- Edge: frontend -> backend -->
+  <path class="edge" d="M240,225 L340,225 L340,105 L440,105" marker-end="url(#arrow)"></path>
+  <text class="edge-label" x="340" y="155" text-anchor="middle">REST API</text>
+  <text class="edge-label mono" x="340" y="175" text-anchor="middle">/teams</text>
+
+  <!-- Edge: backend -> db -->
+  <path class="edge" d="M670,105 L770,105" marker-end="url(#arrow)"></path>
+  <text class="edge-label" x="720" y="90" text-anchor="middle">reads &amp; writes</text>
+  <text class="edge-label mono" x="720" y="125" text-anchor="middle">team rows</text>
+
+  <!-- Edge: frontend -> PokeAPI (bypass) -->
+  <path class="edge highlight" d="M240,285 L340,285 L340,395 L440,395" marker-end="url(#arrow-hl)"></path>
+  <text class="edge-label highlight" x="340" y="322" text-anchor="middle">direct fetch —</text>
+  <text class="edge-label highlight" x="340" y="339" text-anchor="middle">bypasses backend</text>
+  <text class="edge-label highlight mono" x="340" y="357" text-anchor="middle">/pokemon/{name}</text>
+</svg>
