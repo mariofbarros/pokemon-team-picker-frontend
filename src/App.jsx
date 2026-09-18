@@ -1,3 +1,6 @@
+// Root component: lists saved teams and drives create/edit/delete flows.
+// TeamForm handles whole-team create/edit; SlotEditor handles editing a
+// single Pokemon slot on an already-saved team.
 import { useEffect, useState } from "react";
 import { getTeams, createTeam, updateTeam, deleteTeam, fetchPokemon } from "./api";
 import TeamForm from "./TeamForm";
@@ -7,8 +10,8 @@ import "./App.css";
 function App() {
   const [teams, setTeams] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [editingSlot, setEditingSlot] = useState(null); // { teamId, index }
+  const [editingId, setEditingId] = useState(null); // team being edited as a whole, via TeamForm
+  const [editingSlot, setEditingSlot] = useState(null); // { teamId, index } of a single slot being edited
   const [error, setError] = useState(null);
 
   const loadTeams = async () => {
@@ -36,6 +39,8 @@ function App() {
     await loadTeams();
   };
 
+  // Swaps one Pokemon in an existing team, then saves the whole team back
+  // (the API has no per-slot endpoint — updateTeam replaces all 6 at once).
   const handleSlotSave = async (teamId, index, nameOrId) => {
     const team = teams.find((t) => t.id === teamId);
     const pokemon = await fetchPokemon(nameOrId);

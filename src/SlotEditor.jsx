@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+// Inline editor for a single team slot (shown in place of one Pokemon
+// button in App.jsx). Resolves the entered name/id via onSave, which
+// fetches from PokeAPI and persists the updated team.
 export default function SlotEditor({ initialName, onSave, onCancel }) {
   const [value, setValue] = useState(initialName);
   const [error, setError] = useState(null);

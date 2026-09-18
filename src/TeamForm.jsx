@@ -3,6 +3,9 @@ import { fetchPokemon } from "./api";
 
 const EMPTY_SLOTS = ["", "", "", "", "", ""];
 
+// Form for creating a new team or editing an existing one in full (name +
+// all 6 slots). Submitting resolves every slot against PokeAPI before
+// calling onSubmit, so the parent always gets fully-formed Pokemon objects.
 export default function TeamForm({ initial, onSubmit, onCancel, submitLabel }) {
   const [name, setName] = useState(initial?.name || "");
   const [slots, setSlots] = useState(
