@@ -2,6 +2,7 @@ import { useState } from "react";
 
 // Inline editor for a single team slot, swapped in over its Pokemon button
 // (see App.jsx) so a full-team form isn't needed just to swap one Pokemon.
+// onSave resolves the entered name/id via PokeAPI and persists the team.
 export default function SlotEditor({ initialName, onSave, onCancel }) {
   const [value, setValue] = useState(initialName);
   const [error, setError] = useState(null);

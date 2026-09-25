@@ -5,6 +5,16 @@
 
 A responsive **React** + **Vite** web interface for building and managing Pokémon teams of six. Pokémon data (sprites, types) is fetched live from [PokeAPI](https://pokeapi.co/), and teams are persisted through the [Pokemon Team Picker Backend](https://github.com/mariofbarros/pokemon-team-picker-backend).
 
+## Architecture
+
+![Pokemon Team Picker connections diagram](architecture.svg)
+
+Team CRUD goes to the backend, which is the only thing that touches the database. Pokémon lookups (sprites, types) are fetched directly from PokeAPI in the browser and only reach the backend afterward, bundled into a team update.
+
+## About PokeAPI
+
+[PokeAPI](https://pokeapi.co/) is a free, public RESTful API providing data on the Pokémon universe — no API key or authentication required. Whenever a team slot is filled in with a name or National Dex number, `fetchPokemon()` in [`src/api.js`](src/api.js) calls `GET https://pokeapi.co/api/v2/pokemon/{nameOrId}` directly from the browser and reads back the sprite, types, and Pokédex number used to render that slot.
+
 ## Features
 
 - **Team Management**: Create, edit, and delete Pokémon teams instantly.
@@ -26,8 +36,10 @@ A responsive **React** + **Vite** web interface for building and managing Pokém
 
 - **Node.js** (Version 18 or higher recommended)
 - **Git**
-- **Docker** (optional, for containerized runs)
+- **Docker** (optional, for containerized runs — on Windows this means [Docker Desktop](https://www.docker.com/products/docker-desktop/) with the WSL2 backend enabled)
 - A code editor (e.g., VS Code)
+
+> **Windows users:** Install Node.js from [nodejs.org](https://nodejs.org/) (the installer adds `node` and `npm` to PATH automatically). All commands below work the same in Command Prompt, PowerShell, or Git Bash.
 
 ## Setup Guide
 

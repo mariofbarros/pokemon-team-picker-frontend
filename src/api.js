@@ -1,6 +1,9 @@
+// Talks to two APIs: our own backend (team CRUD) and the public PokeAPI
+// (Pokemon lookup by name/id, used when building/editing a team).
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const POKEAPI_URL = "https://pokeapi.co/api/v2";
 
+// Thin fetch wrapper for our backend: JSON-decodes and raises on non-2xx.
 async function request(path, options) {
   const res = await fetch(`${API_URL}${path}`, options);
   if (!res.ok) {
