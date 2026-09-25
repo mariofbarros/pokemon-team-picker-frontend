@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+// Inline editor for a single team slot, swapped in over its Pokemon button
+// (see App.jsx) so a full-team form isn't needed just to swap one Pokemon.
 export default function SlotEditor({ initialName, onSave, onCancel }) {
   const [value, setValue] = useState(initialName);
   const [error, setError] = useState(null);
@@ -21,6 +23,7 @@ export default function SlotEditor({ initialName, onSave, onCancel }) {
     }
   };
 
+  // Enter/Escape shortcuts since this is an inline editor, not a <form>.
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();

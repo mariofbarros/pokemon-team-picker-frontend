@@ -3,8 +3,12 @@ import { fetchPokemon } from "./api";
 
 const EMPTY_SLOTS = ["", "", "", "", "", ""];
 
+// Same form for both flows: pass `initial` to edit an existing team, or
+// omit it to create a new one.
 export default function TeamForm({ initial, onSubmit, onCancel, submitLabel }) {
   const [name, setName] = useState(initial?.name || "");
+  // Slots hold raw text (name or dex number) while editing; only resolved
+  // against PokeAPI on submit, so typos don't cost a request per keystroke.
   const [slots, setSlots] = useState(
     initial?.pokemons?.map((p) => p.name) || EMPTY_SLOTS
   );
@@ -30,6 +34,8 @@ export default function TeamForm({ initial, onSubmit, onCancel, submitLabel }) {
 
     setLoading(true);
     try {
+      // Resolve all 6 slots in parallel; any unknown name/id rejects the
+      // whole submit so we never save a team with a missing Pokemon.
       const pokemons = await Promise.all(slots.map(fetchPokemon));
       await onSubmit({ name: name.trim(), pokemons });
     } catch (err) {

@@ -36,6 +36,9 @@ function App() {
     await loadTeams();
   };
 
+  // The API only supports replacing a whole team, so swapping one slot means
+  // resolving the new Pokemon, splicing it into the existing 6, and PUTting
+  // the full team back.
   const handleSlotSave = async (teamId, index, nameOrId) => {
     const team = teams.find((t) => t.id === teamId);
     const pokemon = await fetchPokemon(nameOrId);
@@ -96,6 +99,8 @@ function App() {
                     className="pokemon"
                     title={`Edit slot ${i + 1}`}
                     onClick={() => {
+                      // Editing a slot and editing the team form are
+                      // mutually exclusive views, so close one to open the other.
                       setEditingId(null);
                       setEditingSlot({ teamId: team.id, index: i });
                     }}

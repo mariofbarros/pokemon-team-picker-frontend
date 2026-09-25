@@ -4,9 +4,12 @@ const POKEAPI_URL = "https://pokeapi.co/api/v2";
 async function request(path, options) {
   const res = await fetch(`${API_URL}${path}`, options);
   if (!res.ok) {
+    // FastAPI puts validation/HTTP errors under "detail"; fall back to the
+    // status code if the body isn't JSON (e.g. a network/proxy error page).
     const body = await res.json().catch(() => null);
     throw new Error(body?.detail ? JSON.stringify(body.detail) : `Request failed (${res.status})`);
   }
+  // DELETE returns 204 with no body, so there's nothing to parse.
   return res.status === 204 ? null : res.json();
 }
 
@@ -34,6 +37,8 @@ export function deleteTeam(id) {
   return request(`/teams/${id}`, { method: "DELETE" });
 }
 
+// Resolves a Pokemon by name or Pokedex number directly against PokeAPI and
+// reshapes it into the flat {id, name, sprite, types} our backend stores.
 export async function fetchPokemon(nameOrId) {
   const key = nameOrId.toLowerCase().trim();
   const res = await fetch(`${POKEAPI_URL}/pokemon/${key}`);
